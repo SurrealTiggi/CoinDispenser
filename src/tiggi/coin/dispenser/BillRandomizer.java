@@ -1,7 +1,6 @@
 package tiggi.coin.dispenser;
 
 import java.util.Random;
-import java.math.*;
 import java.text.DecimalFormat;
 
 public class BillRandomizer {
@@ -39,6 +38,8 @@ public class BillRandomizer {
 		String payment = "250.00";
 		
 		Change toPay = new Change(bill, payment);
+		
+		//System.out.println(toPay.mTotal);
 		
 	}
 

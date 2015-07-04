@@ -1,6 +1,6 @@
 package tiggi.coin.dispenser;
 
-import java.io.Console;
+//import java.io.Console;
 
 public class Server {
 
@@ -19,7 +19,7 @@ public class Server {
 	
 	public static Boolean auth() {
 		
-		Console console = System.console();
+		//Console console = System.console();
 		boolean yayOrNay;
 		
 		//String userName = console.readLine("Username (case sensitive)? >> ");

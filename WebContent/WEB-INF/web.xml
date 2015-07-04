@@ -17,6 +17,6 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Coin Dispenser Application</servlet-name>
-		<url-pattern>/coindispenser/*</url-pattern>
+		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
 </web-app>
