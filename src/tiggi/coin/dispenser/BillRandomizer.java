@@ -5,8 +5,8 @@ import java.text.DecimalFormat;
 
 public class BillRandomizer {
 	
-	public static double minValue = 10;
-	public static double maxValue = 200;
+	private static double minValue = 10;
+	private static double maxValue = 200;
 	
 	public static String roundoff(double bill) {
 		double num = Math.round(bill*100.0)/100.0;

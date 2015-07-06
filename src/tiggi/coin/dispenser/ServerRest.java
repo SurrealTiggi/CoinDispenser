@@ -8,16 +8,18 @@ import javax.ws.rs.Produces;
 @Path("/rest")
 public class ServerRest {
 	
-	// REST functions
+	private static int mAuthToken = 0;
 	
+	//-------------------------
+	// REST functions
+	//-------------------------
+	//	Authentication
 	@Path("/auth/{user}&{pass}")
 	@GET
 	@Produces("application/xml")
 	public String letMeInWithInput(@PathParam("user") String userName, @PathParam("pass") String passWord) {
 		String allowed;
-		
 		System.out.println("Authenticating with user: " + userName + " and pass: " + passWord);
-		
 		if(auth(userName, passWord)) {
 			allowed = "Well done!";			
 		}
@@ -28,6 +30,8 @@ public class ServerRest {
 		return "<auth>" + "<authoutput>" + allowed + "</authoutput>" + "</auth>";
 	}
 	
+	
+	// Random bill generator
 	@Path("/bill")
 	@GET
 	@Produces("application/xml")
@@ -38,6 +42,7 @@ public class ServerRest {
 		return "<bill>" + "<billoutput>" + bill + "</billoutput>" + "</bill>";
 	}
 	
+	// Denomination break down
 	@Path("/payment/{paid}")
 	@GET
 	@Produces("application/xml")
@@ -49,6 +54,7 @@ public class ServerRest {
 		return "<change>" + "<changeoutput>" + userPayment + "</changeoutput>" + "</change>";
 	}
 	
+	// No input
 	@GET
 	@Produces("application/xml")
 	public String letMeInWithoutInput() {
@@ -61,9 +67,9 @@ public class ServerRest {
 	public static Boolean auth(String usr, String pwd) {
 		boolean yayOrNay;
 		
-		
 		if(usr == "user" && pwd == "pass") {
 			yayOrNay = true;
+			mAuthToken = 1;
 		}
 		else {
 			yayOrNay = false;
@@ -71,5 +77,30 @@ public class ServerRest {
 		
 		return yayOrNay;
 	}
-	
+
+	/*public Response login(
+	        //@Context HttpHeaders httpHeaders,
+	        @FormParam( "username" ) String username,
+	        @FormParam( "password" ) String password ) {
+	 
+	        //DemoAuthenticator demoAuthenticator = DemoAuthenticator.getInstance();
+	        //String serviceKey = httpHeaders.getHeaderString( DemoHTTPHeaderNames.SERVICE_KEY );
+	 
+	        try {
+	            String authToken = demoAuthenticator.login( serviceKey, username, password );
+	 
+	            JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
+	            jsonObjBuilder.add( "auth_token", authToken );
+	            JsonObject jsonObj = jsonObjBuilder.build();
+	 
+	            return getNoCacheResponseBuilder( Response.Status.OK ).entity( jsonObj.toString() ).build();
+	 
+	        } catch ( final LoginException ex ) {
+	            JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
+	            jsonObjBuilder.add( "message", "Problem matching service key, username and password" );
+	            JsonObject jsonObj = jsonObjBuilder.build();
+	 
+	            return getNoCacheResponseBuilder( Response.Status.UNAUTHORIZED ).entity( jsonObj.toString() ).build();
+	        }
+	}*/
 }
