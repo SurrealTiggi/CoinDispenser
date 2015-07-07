@@ -59,8 +59,8 @@ public class ServerRest {
 		StringBuilder result = null;
 		
 		// Loop through return above and display in xml
+		int i = 1;
 		for (Double money: looper) {
-			int i = 1;
 			String str = (Collections.frequency(change, money) + "x R" + money).toString();
 			result = sb.append("<change" + i + ">" + str + "</change" + i + ">");
 			i++;
