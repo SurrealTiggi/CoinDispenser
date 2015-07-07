@@ -7,6 +7,8 @@ public class Change {
 	
 	private static double mTotal;
 	private static double mPayment;
+	private static Set<Double> mUniqueSet;
+	private static List<Double> mChange;
 	
 	public static double sumList(List<Double> gotList) {
 		double result = 0;
@@ -60,21 +62,18 @@ public class Change {
 	}
 
 	public static double starter(double total, double payment) {
+		
+		// Generate local list of change
 		List<Double> change = breakItDown(total, payment);
+		// Generate class list of change
+		mChange = breakItDown(total, payment);
 
 		// HashSet creates a set with only unique values
 		Set<Double> uniqueSet = new HashSet<Double>(change);
-		//System.out.println(uniqueSet);
+		// Set class Set to return to REST
+		mUniqueSet = new HashSet<Double>(change);
 		
-		System.out.println("You paid >> " + payment);
-		System.out.println("Your change is " + sumList(change) + " broken down as follows:");
 		double finalSum = sumList(change);
-		
-		// Loop through set, pass to Collections to count occurences in original list
-		for (Double money: uniqueSet) {
-			System.out.println(Collections.frequency(change, money) + "x R" + money);
-		}
-		
 		return finalSum;
 	}
 	
@@ -83,5 +82,13 @@ public class Change {
 		mPayment = Double.parseDouble(payment);
 		
 		starter(mTotal, mPayment);
+	}
+	
+	public Set<Double> getChangeSet() {
+		return mUniqueSet;
+	}
+	
+	public List<Double> getChangeList() {
+		return mChange;
 	}
 }

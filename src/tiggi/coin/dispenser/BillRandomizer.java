@@ -7,6 +7,7 @@ public class BillRandomizer {
 	
 	private static double minValue = 10;
 	private static double maxValue = 200;
+	private static String billAsStr;
 	
 	public static String roundoff(double bill) {
 		double num = Math.round(bill*100.0)/100.0;
@@ -33,14 +34,12 @@ public class BillRandomizer {
 		Random r = new Random();
 		double f = minValue + (maxValue - minValue) * r.nextDouble();
 		String bill = roundoff(f);
-		System.out.println("Please pay " + bill);
+		billAsStr = bill;
 		
-		String payment = "250.00";
-		
-		Change toPay = new Change(bill, payment);
-		
-		//System.out.println(toPay.mTotal);
-		
+	}
+	
+	public String getBill() {
+		return billAsStr;
 	}
 
 }

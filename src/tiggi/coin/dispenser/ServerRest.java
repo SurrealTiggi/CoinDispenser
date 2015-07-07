@@ -1,5 +1,7 @@
 package tiggi.coin.dispenser;
 
+import java.util.*;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -8,7 +10,9 @@ import javax.ws.rs.Produces;
 @Path("/rest")
 public class ServerRest {
 	
-	private static int mAuthToken = 0;
+	private static int mAuthToken;
+	private static String mBill;
+	private static String mPayment;
 	
 	//-------------------------
 	// REST functions
@@ -30,16 +34,15 @@ public class ServerRest {
 		return "<auth>" + "<authoutput>" + allowed + "</authoutput>" + "</auth>";
 	}
 	
-	
 	// Random bill generator
 	@Path("/bill")
 	@GET
 	@Produces("application/xml")
 	public String spitOutRandomBill() {
-		String bill;
 		System.out.println("Generating your bill...");
-		bill = "R250.00";
-		return "<bill>" + "<billoutput>" + bill + "</billoutput>" + "</bill>";
+		BillRandomizer bill = new BillRandomizer();
+		mBill = bill.getBill();
+		return "<bill>" + "<billoutput>" + mBill + "</billoutput>" + "</bill>";
 	}
 	
 	// Denomination break down
@@ -47,11 +50,23 @@ public class ServerRest {
 	@GET
 	@Produces("application/xml")
 	public String getTheChange(@PathParam("paid") String paid) {
-		// Pass bill and payment through to Change class
-		// Make bill a class variable that this GET changes
-		String userPayment = paid;
 		
-		return "<change>" + "<changeoutput>" + userPayment + "</changeoutput>" + "</change>";
+		mPayment = paid;
+		Change toPay = new Change(mBill, mPayment);
+		Set<Double> looper = toPay.getChangeSet();
+		List<Double> change = toPay.getChangeList();
+		StringBuilder sb = new StringBuilder();
+		StringBuilder result = null;
+		
+		// Loop through return above and display in xml
+		for (Double money: looper) {
+			int i = 1;
+			String str = (Collections.frequency(change, money) + "x R" + money).toString();
+			result = sb.append("<change" + i + ">" + str + "</change" + i + ">");
+			i++;
+		}
+		
+		return "<change>" + "<changeoutput>" + result.toString() + "</changeoutput>" + "</change>";
 	}
 	
 	// No input
