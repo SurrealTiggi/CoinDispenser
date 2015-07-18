@@ -53,6 +53,7 @@ public class ServerRest {
 		
 		mPayment = paid;
 		Change toPay = new Change(mBill, mPayment);
+		Double changeFull = toPay.sumList(toPay.getChangeList());
 		Set<Double> looper = toPay.getChangeSet();
 		List<Double> change = toPay.getChangeList();
 		StringBuilder sb = new StringBuilder();
@@ -65,7 +66,7 @@ public class ServerRest {
 			result = sb.append("<change" + i + ">" + str + "</change" + i + ">");
 			i++;
 		}
-		
+		String resultstr = "@Produces(\"application/xml\") Your change is:\n" + changeFull;
 		return "<change>" + "<changeoutput>" + result.toString() + "</changeoutput>" + "</change>";
 	}
 	
@@ -82,7 +83,7 @@ public class ServerRest {
 	public static Boolean auth(String usr, String pwd) {
 		boolean yayOrNay;
 		
-		if(usr == "user" && pwd == "pass") {
+		if(usr.equals("user") && pwd.equals("pass")) {
 			yayOrNay = true;
 			mAuthToken = 1;
 		}
