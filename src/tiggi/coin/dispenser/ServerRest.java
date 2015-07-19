@@ -25,10 +25,10 @@ public class ServerRest {
 		String allowed;
 		System.out.println("Authenticating with user: " + userName + " and pass: " + passWord);
 		if(auth(userName, passWord)) {
-			allowed = "Well done!";			
+			allowed = "1";			
 		}
 		else {
-			allowed = "Booooooo";
+			allowed = "0";
 		} 
 		//String result = "@Produces(\"application/xml\") Your results:\n" + allowed;
 		return "<auth>" + "<authoutput>" + allowed + "</authoutput>" + "</auth>";
@@ -46,18 +46,19 @@ public class ServerRest {
 	}
 	
 	// Denomination break down
-	@Path("/payment/{paid}")
+	@Path("/payment/{bill}&{paid}")
 	@GET
 	@Produces("application/xml")
-	public String getTheChange(@PathParam("paid") String paid) {
+	public String getTheChange(@PathParam("bill") String bill, @PathParam("paid") String paid) {
 		
-		mPayment = paid;
-		Change toPay = new Change(mBill, mPayment);
+		//mPayment = paid;
+		Change toPay = new Change(bill, paid);
 		Double changeFull = toPay.sumList(toPay.getChangeList());
 		Set<Double> looper = toPay.getChangeSet();
 		List<Double> change = toPay.getChangeList();
 		StringBuilder sb = new StringBuilder();
 		StringBuilder result = null;
+		System.out.println("Done with change, now formatting...");
 		
 		// Loop through return above and display in xml
 		int i = 1;
@@ -94,29 +95,4 @@ public class ServerRest {
 		return yayOrNay;
 	}
 
-	/*public Response login(
-	        //@Context HttpHeaders httpHeaders,
-	        @FormParam( "username" ) String username,
-	        @FormParam( "password" ) String password ) {
-	 
-	        //DemoAuthenticator demoAuthenticator = DemoAuthenticator.getInstance();
-	        //String serviceKey = httpHeaders.getHeaderString( DemoHTTPHeaderNames.SERVICE_KEY );
-	 
-	        try {
-	            String authToken = demoAuthenticator.login( serviceKey, username, password );
-	 
-	            JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
-	            jsonObjBuilder.add( "auth_token", authToken );
-	            JsonObject jsonObj = jsonObjBuilder.build();
-	 
-	            return getNoCacheResponseBuilder( Response.Status.OK ).entity( jsonObj.toString() ).build();
-	 
-	        } catch ( final LoginException ex ) {
-	            JsonObjectBuilder jsonObjBuilder = Json.createObjectBuilder();
-	            jsonObjBuilder.add( "message", "Problem matching service key, username and password" );
-	            JsonObject jsonObj = jsonObjBuilder.build();
-	 
-	            return getNoCacheResponseBuilder( Response.Status.UNAUTHORIZED ).entity( jsonObj.toString() ).build();
-	        }
-	}*/
 }
