@@ -20,7 +20,7 @@ public class ServerRest {
 	//	Authentication
 	@Path("/auth/{user}&{pass}")
 	@GET
-	@Produces("application/xml")
+	//@Produces("application/xml")
 	public String letMeInWithInput(@PathParam("user") String userName, @PathParam("pass") String passWord) {
 		String allowed;
 		System.out.println("Authenticating with user: " + userName + " and pass: " + passWord);
@@ -31,24 +31,27 @@ public class ServerRest {
 			allowed = "0";
 		} 
 		//String result = "@Produces(\"application/xml\") Your results:\n" + allowed;
-		return "<auth>" + "<authoutput>" + allowed + "</authoutput>" + "</auth>";
+		//return "<auth>" + "<authoutput>" + allowed + "</authoutput>" + "</auth>";
+		return allowed;
+		
 	}
 	
 	// Random bill generator
 	@Path("/bill")
 	@GET
-	@Produces("application/xml")
+	//@Produces("application/xml")
 	public String spitOutRandomBill() {
 		System.out.println("Generating your bill...");
 		BillRandomizer bill = new BillRandomizer();
 		mBill = bill.getBill();
-		return "<bill>" + "<billoutput>" + mBill + "</billoutput>" + "</bill>";
+		//return "<bill>" + "<billoutput>" + mBill + "</billoutput>" + "</bill>";
+		return mBill;
 	}
 	
 	// Denomination break down
 	@Path("/payment/{bill}&{paid}")
 	@GET
-	@Produces("application/xml")
+	//@Produces("application/xml")
 	public String getTheChange(@PathParam("bill") String bill, @PathParam("paid") String paid) {
 		
 		//mPayment = paid;
@@ -64,11 +67,13 @@ public class ServerRest {
 		int i = 1;
 		for (Double money: looper) {
 			String str = (Collections.frequency(change, money) + "x R" + money).toString();
-			result = sb.append("<change" + i + ">" + str + "</change" + i + ">");
+			//result = sb.append("<change" + i + ">" + str + "</change" + i + ">");
+			result = sb.append(str + ",");
 			i++;
 		}
 		String resultstr = "@Produces(\"application/xml\") Your change is:\n" + changeFull;
-		return "<change>" + "<changeoutput>" + result.toString() + "</changeoutput>" + "</change>";
+		//return "<change>" + "<changeoutput>" + result.toString() + "</changeoutput>" + "</change>";
+		return result.toString();
 	}
 	
 	// No input
